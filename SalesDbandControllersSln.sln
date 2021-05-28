@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesDbandControllers", "SalesDbandControllers\SalesDbandControllers.csproj", "{87E4E6DD-1142-4C29-9130-B016CC173AAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesDbLib", "ClassLibrary1\SalesDbLib.csproj", "{C7CBCABC-11C8-4D33-B705-AC38247C0A9C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87E4E6DD-1142-4C29-9130-B016CC173AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87E4E6DD-1142-4C29-9130-B016CC173AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87E4E6DD-1142-4C29-9130-B016CC173AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87E4E6DD-1142-4C29-9130-B016CC173AAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7CBCABC-11C8-4D33-B705-AC38247C0A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CBCABC-11C8-4D33-B705-AC38247C0A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CBCABC-11C8-4D33-B705-AC38247C0A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CBCABC-11C8-4D33-B705-AC38247C0A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E73AE60D-9C15-48B1-80C3-91F6C965DA8D}
+	EndGlobalSection
+EndGlobal
