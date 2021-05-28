@@ -23,36 +23,35 @@ namespace SalesDbLib
             return orderline;
         }
 
-        private int AddWithValue(Product product, SqlCommand cmd)
+        private int AddWithValue(OrderLine orderLine, SqlCommand cmd)
         {
-            cmd.Parameters.AddWithValue("@partnbr", product.PartNbr);
-            cmd.Parameters.AddWithValue("@name", product.Name);
-            cmd.Parameters.AddWithValue("@price", product.Price);
-            cmd.Parameters.AddWithValue("@unit", product.Unit);
-            cmd.Parameters.AddWithValue("@photopath", (object)product.PhotoPath ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@vendorid", product.VendorId);
+            cmd.Parameters.AddWithValue("@orderid", orderLine.OrderId);
+            cmd.Parameters.AddWithValue("@product", orderLine.Product);
+            cmd.Parameters.AddWithValue("@description", orderLine.Description);
+            cmd.Parameters.AddWithValue("@quantity", orderLine.Quantity);
+            cmd.Parameters.AddWithValue("@price", orderLine.Price);
             return cmd.ExecuteNonQuery();
         }
 
-        public List<Product> GetAll()
+        public List<OrderLine> GetAll()
         {
-            var sql = "SELECT * From Products;";
+            var sql = "SELECT * From OrderLines;";
             var cmd = new SqlCommand(sql, connection.SqlConn);
             var reader = cmd.ExecuteReader();
-            var products = new List<Product>();
+            var orderLines = new List<OrderLine>();
             while (reader.Read())
             {
-                var product = FillProductFromSqlRow(reader);
-                products.Add(product);
+                var orderLine = FillOrderLineFromSqlRow(reader);
+                orderLines.Add(orderLine);
             }
             reader.Close();
-            GetVendorForProducts(products);
-            return products;
+            GetOrderForOrderLines(orderLines);
+            return orderLines;
         }
 
-        public Product GetByPK(int id)
+        public OrderLine GetByPK(int id)
         {
-            var sql = $"SELECT * From Products where Id = @id;";
+            var sql = $"SELECT * From OrderLines where Id = @id;";
             var cmd = new SqlCommand(sql, connection.SqlConn);
             cmd.Parameters.AddWithValue("@id", id);
             var reader = cmd.ExecuteReader();
@@ -62,75 +61,74 @@ namespace SalesDbLib
                 return null;
             }
             reader.Read();
-            var product = FillProductFromSqlRow(reader);
+            var orderLine = FillOrderLineFromSqlRow(reader);
             reader.Close();
-            return product;
+            return orderLine;
         }
 
-        private void GetVendorForProducts(List<Product> products)
+        private void GetOrderForOrderLines(List<OrderLine> orderLines)
         {
-            foreach (var product in products)
+            foreach (var orderLine in orderLines)
             {
-                GetVendorForProduct(product);
+                GetOrderForOrderLine(orderLine);
             }
         }
-        private void GetVendorForProduct(Product product)
+        private void GetOrderForOrderLine(OrderLine orderLine)
         {
-            var vendCtrl = new VendorsController(connection);
-            product.Vendor = vendCtrl.GetByPK(product.VendorId);
+            var OrdrCtrl = new OrdersController(connection);
+            orderLine.Order = OrdrCtrl.GetByPk(orderLine.OrderId);
         }
 
-        public bool Create(Product product, string VendorCode)
+        public bool Create(OrderLine orderLine, int orderId)
         {
-            var vendCtrl = new VendorsController(connection);
-            var vendor = vendCtrl.GetByCode(VendorCode);
-            product.VendorId = vendor.Id;
-            return Create(product);
+            var ordrCtrl = new OrdersController(connection);
+            var order = ordrCtrl.GetByPk(orderId);
+            orderLine.OrderId = order.Id;
+            return Create(orderLine);
         }
 
-        public bool Create(Product product)
+        public bool Create(OrderLine orderLine)
         {
-            var sql = "INSERT into Products "
-                + "(PartNbr, Name, Price, Unit, PhotoPath, VendorId) "
-                + " VALUES (@partnbr, @name, @price, @unit, @photopath, @vendorid); ";
+            var sql = "INSERT into OrderLines "
+                + "(OrderId, Product, Description, Quantity, Price) "
+                + " VALUES (@orderid, @product, @description, @quantity, @price); ";
             var cmd = new SqlCommand(sql, connection.SqlConn);
-            var rowsAffected = AddWithValue(product, cmd);
+            var rowsAffected = AddWithValue(orderLine, cmd);
 
             return (rowsAffected == 1);
         }
 
-        public bool Change(Product product)
+        public bool Change(OrderLine orderLine)
         {
-            var sql = $"UPDATE Products Set " +
-                $"PartNbr = @partnbr, " +
-                $"Name = @name, " +
-                $"Price = @price, " +
-                $"Unit = @unit, " +
-                $"PhotoPath = @photopath, " +
-                $"VendorId = @vendorid " +
+            var sql = $"UPDATE OrderLines Set " +
+                $"OrderId = @orderid, " +
+                $"Product = @product, " +
+                $"Description = @description, " +
+                $"Quantity = @quantity, " +
+                $"Price = @price " +
                 $"Where Id = @id;";
             var cmd = new SqlCommand(sql, connection.SqlConn);
-            cmd.Parameters.AddWithValue("@id", product.Id);
-            var rowsAffected = AddWithValue(product, cmd);
+            cmd.Parameters.AddWithValue("@id", orderLine.Id);
+            var rowsAffected = AddWithValue(orderLine, cmd);
 
             return (rowsAffected == 1);
 
         }
 
-        public bool Delete(Product product)
+        public bool Delete(OrderLine orderLine)
         {
-            var sql = $"DELETE from Products " +
+            var sql = $"DELETE from OrderLines " +
                 $"Where Id = @id;";
             var cmd = new SqlCommand(sql, connection.SqlConn);
-            cmd.Parameters.AddWithValue("@id", product.Id);
+            cmd.Parameters.AddWithValue("@id", orderLine.Id);
             var rowsAffected = cmd.ExecuteNonQuery();
 
             return (rowsAffected == 1);
         }
 
-        public ProductsController(Connection connection)
+        public OrderLinesController(Connection connection)
         {
-            ProductsController.connection = connection;
+            OrderLinesController.connection = connection;
         }
     }
 }
