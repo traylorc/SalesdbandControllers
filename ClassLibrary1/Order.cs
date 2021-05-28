@@ -1,6 +1,7 @@
-﻿using System;
+﻿
+using System;
 
-namespace ClassLibrary1
+namespace SalesDbLib
 {
     public class Order
     {
