@@ -19,7 +19,7 @@ namespace SalesDbLib
         public Order GetByCustomerId(int customerId)
         {
             var sql = " SELECT * from Orders where CustomerId = @customerid;";
-            var cmd = new SqlCommand(sql, connection.Sqlconn);
+            var cmd = new SqlCommand(sql, connection.SqlConn);
             cmd.Parameters.AddWithValue("@customerId", customerId);
             var reader = cmd.ExecuteReader();
             if (!reader.HasRows)
